@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE = 'yashjskj/private-registry:latest'
+        DOCKER_IMAGE = 'yashjskj/backentd:latest'
     }
     stages {
         stage('Build Docker Image') {
