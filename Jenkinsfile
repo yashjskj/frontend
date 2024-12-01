@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKER_IMAGE = 'yashjskj/frontend:latest'
+        KUBECONFIG_PATH = "${env.WORKSPACE}/kubeconfig" // Path to write kubeconfig
     }
     stages {
         stage('Build Docker Image') {
@@ -23,8 +24,15 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    sh 'kubectl apply -f k8s/frontend-deployment.yaml --validate=false'
-                    sh 'kubectl apply -f k8s/frontend-service.yaml --validate=false'
+                    // Write Kubernetes credentials (kubeconfig) to a file
+                    withCredentials([file(credentialsId: 'minikube-kubeconfig', variable: 'KUBECONFIG_FILE')]) {
+                        sh """
+                        cp $KUBECONFIG_FILE $KUBECONFIG_PATH
+                        export KUBECONFIG=$KUBECONFIG_PATH
+                        kubectl apply -f k8s/frontend-deployment.yaml --validate=false
+                        kubectl apply -f k8s/frontend-service.yaml --validate=false
+                        """
+                    }
                 }
             }
         }
