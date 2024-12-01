@@ -17,5 +17,5 @@ spec:
         - name: frontend
           image: yashjskj/frontend:latest
           ports:
-            - containerPort: 3000
+            - containerPort: 80
 
