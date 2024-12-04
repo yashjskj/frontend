@@ -22,6 +22,9 @@ FROM nginx:alpine
 # Copy the built files from the builder stage to Nginx's default web root
 COPY --from=builder /app/dist /usr/share/nginx/html
 
+# Copy custom NGINX configuration
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
+
 # Expose port 80 for the Nginx server
 EXPOSE 80
 
