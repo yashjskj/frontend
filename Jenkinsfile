@@ -31,7 +31,7 @@ pipeline {
                     sh 'kubectl rollout restart deployment/frontend -n multi-service-app'
 
                      // Adding sleep for 40 seconds
-                    echo 'Waiting for 50 seconds to ensure service are running...'
+                    echo 'Waiting for 40 seconds to ensure service are running...'
                     sleep 40
 
                     // Verify if the frontend pod is running
