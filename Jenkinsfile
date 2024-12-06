@@ -26,10 +26,20 @@ pipeline {
                     sh 'kubectl apply -f k8s/namespace.yaml'
                     sh 'kubectl apply -f k8s/frontend-deployment.yaml'
                     sh 'kubectl apply -f k8s/frontend-service.yaml'
+                    
+                    // Rollout restart to apply the new deployment
                     sh 'kubectl rollout restart deployment/frontend -n multi-service-app'
+
+                    // Verify if the frontend pod is running
+                    def frontendPodStatus = sh(script: 'kubectl get pods -n multi-service-app -l app=frontend -o jsonpath="{.items[0].status.phase}"', returnStdout: true).trim()
+                    if (frontendPodStatus != 'Running') {
+                        echo "Frontend pod is not running, initiating rollback..."
+                        // Rollback frontend deployment if it's not running
+                        sh 'kubectl rollout undo deployment/frontend -n multi-service-app'
+                        currentBuild.result = 'FAILURE' // Mark the build as failed
+                    }
                 }
             }
         }
     }
 }
-
