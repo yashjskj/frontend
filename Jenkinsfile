@@ -30,6 +30,10 @@ pipeline {
                     // Rollout restart to apply the new deployment
                     sh 'kubectl rollout restart deployment/frontend -n multi-service-app'
 
+                     // Adding sleep for 40 seconds
+                    echo 'Waiting for 50 seconds to ensure service are running...'
+                    sleep 40
+
                     // Verify if the frontend pod is running
                     def frontendPodStatus = sh(script: 'kubectl get pods -n multi-service-app -l app=frontend -o jsonpath="{.items[0].status.phase}"', returnStdout: true).trim()
                     if (frontendPodStatus != 'Running') {
