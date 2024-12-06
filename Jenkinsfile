@@ -26,6 +26,7 @@ pipeline {
                     sh 'kubectl apply -f k8s/namespace.yaml'
                     sh 'kubectl apply -f k8s/frontend-deployment.yaml'
                     sh 'kubectl apply -f k8s/frontend-service.yaml'
+                    sh 'kubectl rollout restart deployment/frontend -n multi-service-app'
                 }
             }
         }
