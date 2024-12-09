@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: yashjskj/frontend:latest
+          image: yashjskj/private-registry/backend:latest
           ports:
             - containerPort: 80
