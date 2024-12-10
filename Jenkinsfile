@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE = 'yashjskj/backend:latest'
+        DOCKER_IMAGE = 'yashjskj/frontend:latest'
     }
     stages {
         stage('Build Docker Image') {
